@@ -1,0 +1,32 @@
+[
+  {
+    "#": 1,
+    "title": "The Glitch in the Routine",
+    "status": "Draft",
+    "word_count": 3100,
+    "delta": 0,
+    "priority": "\ud83d\udfe7",
+    "deadline": "2025-05-10",
+    "last_edited": "2025-04-28"
+  },
+  {
+    "#": 2,
+    "title": "The Invitation",
+    "status": "Line-Edits",
+    "word_count": 2800,
+    "delta": -200,
+    "priority": "\ud83d\udfe5",
+    "deadline": "2025-05-12",
+    "last_edited": "2025-04-27"
+  },
+  {
+    "#": 3,
+    "title": "First Steps",
+    "status": "Not Started",
+    "word_count": 0,
+    "delta": 0,
+    "priority": "\ud83d\udfe8",
+    "deadline": "",
+    "last_edited": ""
+  }
+]
