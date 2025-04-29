@@ -114,10 +114,21 @@ tabs = st.tabs(["📖 Chapters", "🪄 Editing Passes", "✅ To-Dos", "📥 Impo
 # ------------------------------------------------------------------
 # 1️⃣ CHAPTERS TAB
 # ------------------------------------------------------------------
+# …[imports & config unchanged]…
+
+# 1️⃣ CHAPTERS TAB
 with tabs[0]:
     st.subheader("Chapter Progress")
 
     chapters_df = pd.DataFrame(st.session_state["chapters"])
+
+    # 🔧 NEW: make sure date-ish columns are really datetime
+    for col in ["deadline", "last_edited"]:
+        if col in chapters_df.columns:
+            chapters_df[col] = pd.to_datetime(chapters_df[col], errors="coerce")
+
+    # 🚑 Streamlit grid can’t cope with pd.NaT → convert all NaT/NaN to None
+    chapters_df = chapters_df.astype(object).where(~chapters_df.isna(), None)
 
     edited_chapters = st.data_editor(
         chapters_df,
@@ -141,6 +152,7 @@ with tabs[0]:
         if any(r["status"] == "✅ Done" for r in records):
             st.balloons()
             st.success('Kaela sneers: “About bloody time you wrapped one up.”')
+
 
 # ------------------------------------------------------------------
 # 2️⃣ EDITING-PASSES TAB
