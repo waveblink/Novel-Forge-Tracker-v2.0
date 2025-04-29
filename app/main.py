@@ -154,13 +154,28 @@ with tabs[1]:
 
     passes_df = pd.DataFrame(st.session_state["passes"])
 
+    # 👷 Ensure an editable schema exists
+    if passes_df.empty:
+        passes_df = pd.DataFrame(
+            [
+                {
+                    "focus": "",
+                    "status": False,
+                    "chapter": "",
+                }
+            ]
+        )
+
+    # 🚑 Replace NaN with None for Streamlit friendliness
+    passes_df = passes_df.astype(object).where(~passes_df.isna(), None)
+
     edited_passes = st.data_editor(
         passes_df,
         num_rows="dynamic",
         column_config={
             "focus": st.column_config.SelectboxColumn(
                 "Focus",
-                options=["Pacing", "World-building", "Prose Sparkle", "Character Arc", "Theme"],
+                options=["", "Pacing", "World-building", "Prose Sparkle", "Character Arc", "Theme"],
             ),
             "status":  st.column_config.CheckboxColumn("Done?"),
             "chapter": st.column_config.SelectboxColumn(
@@ -172,12 +187,15 @@ with tabs[1]:
     )
 
     if st.button("💾 Save passes"):
-        records = edited_passes.to_dict("records")
+        # ignore blank rows
+        records = [
+            r for r in edited_passes.to_dict("records")
+            if any(v not in ("", None) for v in r.values())
+        ]
         passes_table.truncate()
         passes_table.insert_multiple(records)
         st.session_state["passes"] = records
         autosave()
-
 # ------------------------------------------------------------------
 # 3️⃣ TO-DO LIST TAB
 # ------------------------------------------------------------------
