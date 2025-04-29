@@ -1,0 +1,9 @@
+/* Dark‑mode basics */
+body[data-theme="dark"] {
+  background: #0e1117;
+  color: #e6e6e6;
+}
+[data-testid="stMetric"] div { font-weight: 600; }
+
+/* Emoji priority badge */
+span:has(> svg) { font-size: 20px !important; }
