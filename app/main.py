@@ -34,6 +34,10 @@ st.set_page_config(
 css = (Path(__file__).parent / "assets" / "styles.css").read_text()
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
+st.markdown(
+    "<script src='assets/appear.js'></script>",
+    unsafe_allow_html=True
+)
 
 # ------------------------------------------------------------------
 # 🗄️ DATABASE
