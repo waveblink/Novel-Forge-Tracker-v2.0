@@ -186,16 +186,26 @@ with tabs[2]:
 
     todos_df = pd.DataFrame(st.session_state["todos"])
 
+    # 👷 Ensure there’s at least a schema so the grid is editable
+    if todos_df.empty:
+        todos_df = pd.DataFrame([{"task": "", "done": False}])
+
+    # 🚑 Streamlit dislikes NaN/NaT – normalise them
+    todos_df = todos_df.astype(object).where(~todos_df.isna(), None)
+
     edited_todos = st.data_editor(
         todos_df,
         num_rows="dynamic",
-        column_config={"done": st.column_config.CheckboxColumn("✓")},
+        column_config={
+            "task": st.column_config.TextColumn("Task"),
+            "done": st.column_config.CheckboxColumn("✓"),
+        },
         use_container_width=True,
         key="todos_editor",
     )
 
     if st.button("💾 Save todos"):
-        records = edited_todos.to_dict("records")
+        records = [r for r in edited_todos.to_dict("records") if r.get("task")]
         todos_table.truncate()
         todos_table.insert_multiple(records)
         st.session_state["todos"] = records
