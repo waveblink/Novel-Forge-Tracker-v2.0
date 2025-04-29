@@ -31,10 +31,9 @@ st.set_page_config(
 )
 
 # Inject CSS -------------------------------------------------------
-st.markdown(
-    (Path(__file__).parent / "assets" / "styles.css").read_text(),
-    unsafe_allow_html=True,
-)
+css = (Path(__file__).parent / "assets" / "styles.css").read_text()
+st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
 
 # ------------------------------------------------------------------
 # 🗄️ DATABASE
@@ -105,6 +104,7 @@ with st.sidebar:
     st.progress(min(total_words / target_words, 1.0))
     st.divider()
     st.toggle("🌙 Dark mode")
+
 
 # ------------------------------------------------------------------
 # 🗂️ MAIN TABS
